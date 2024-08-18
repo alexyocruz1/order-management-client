@@ -12,7 +12,7 @@ const NavBar = () => {
   };
 
   if (window.innerWidth <= 767) {
-    styles.brandLogo.fontSize = '1.5rem';
+    styles.brandLogo.fontSize = '1.2rem';
   }
 
   return (

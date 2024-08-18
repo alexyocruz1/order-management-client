@@ -49,6 +49,11 @@ const Customer = () => {
     return new Date(date.getTime() + date.getTimezoneOffset() * 60000).toLocaleDateString();
   };
 
+  const calculateRows = (text) => {
+    const lines = text.split('\n').length;
+    return lines < 3 ? 3 : lines; // Minimum 3 rows
+  };
+
   return (
     <div className="container">
       <h2 className="center-align">Track your order</h2>
@@ -61,7 +66,7 @@ const Customer = () => {
         </div>
         <div className="row">
           <div className="col s12">
-            <button type="submit" className="btn waves-effect waves-light">Get Order</button>
+            <button type="submit" className="btn">Get Order</button>
           </div>
         </div>
       </form>
@@ -73,7 +78,13 @@ const Customer = () => {
             <p><strong>Order Name:</strong> {order.orderName}</p>
             <p><strong>Estimated Date of Delivery:</strong> {formatDate(order.estimatedDateOfDelivery)}</p>
             <p><strong>Order Description:</strong></p>
-            <textarea className="materialize-textarea" readOnly value={order.orderDescription}></textarea>
+            <textarea
+              className="materialize-textarea"
+              readOnly
+              value={order.orderDescription}
+              style={{ height: 'auto', overflow: 'hidden' }}
+              rows={calculateRows(order.orderDescription)}
+            ></textarea>
             <ul className="collapsible">
               {order.orderStatus
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -81,7 +92,7 @@ const Customer = () => {
                   <li key={index}>
                     <div className="collapsible-header">
                       <i className="material-icons">{statusIcons[status.status]}</i>
-                      <span style={{textTransform: 'capitalize'}}>
+                      <span style={{ textTransform: 'capitalize' }}>
                         {status.status}
                       </span>
                       <span style={{ marginLeft: 'auto', textAlign: 'end', display: 'inline-block', width: '100px' }}>
