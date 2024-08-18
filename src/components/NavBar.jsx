@@ -19,7 +19,7 @@ const NavBar = () => {
     <nav style={styles.navWrapper}>
       <div className="container">
         <Link to="/" style={styles.brandLogo} className="brand-logo center">
-          Order Managing
+          Order Management
         </Link>
       </div>
     </nav>
