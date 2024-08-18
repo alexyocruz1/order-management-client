@@ -3,12 +3,18 @@ import axios from 'axios';
 import M from 'materialize-css';
 
 const Admin = () => {
+  const formatDate = (date) => {
+    const d = new Date(date);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().split('T')[0];
+  };
+  
   const initialOrderDetails = {
     orderOwner: '',
     orderName: '',
     orderDescription: '',
-    orderStatus: [{ status: '', description: '', date: new Date().toISOString().split('T')[0] }],
-    estimatedDateOfDelivery: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
+    orderStatus: [{ status: '', description: '', date: formatDate(new Date()) }],
+    estimatedDateOfDelivery: formatDate(new Date(new Date().setMonth(new Date().getMonth() + 1))),
   };
 
   const [orderDetails, setOrderDetails] = useState(initialOrderDetails);
@@ -30,13 +36,13 @@ const Admin = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setOrderDetails({ ...orderDetails, [name]: value });
+    setOrderDetails({ ...orderDetails, [name]: name === 'estimatedDateOfDelivery' ? formatDate(value) : value });
   };
 
   const handleStatusChange = (index, e) => {
     const { name, value } = e.target;
     const newOrderStatus = [...orderDetails.orderStatus];
-    newOrderStatus[index][name] = value;
+    newOrderStatus[index][name] = name === 'date' ? formatDate(value) : value;
     setOrderDetails({ ...orderDetails, orderStatus: newOrderStatus });
   };
 
@@ -55,14 +61,23 @@ const Admin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const formattedOrderDetails = {
+        ...orderDetails,
+        orderStatus: orderDetails.orderStatus.map(status => ({
+          ...status,
+          date: formatDate(status.date),
+        })),
+        estimatedDateOfDelivery: formatDate(orderDetails.estimatedDateOfDelivery),
+      };
+  
       if (editingOrderId) {
-        const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/admin/update-order/${editingOrderId}`, orderDetails);
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/admin/update-order/${editingOrderId}`, formattedOrderDetails);
         if (response.status === 200) {
           M.toast({ html: 'Order updated successfully!', classes: 'green' });
           setEditingOrderId(null);
         }
       } else {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/create-order`, orderDetails);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/create-order`, formattedOrderDetails);
         if (response.status === 201) {
           M.toast({ html: 'Order created successfully!', classes: 'green' });
         }
@@ -75,7 +90,15 @@ const Admin = () => {
   };
 
   const handleEdit = (order) => {
-    setOrderDetails(order);
+    const formattedOrder = {
+      ...order,
+      orderStatus: order.orderStatus.map(status => ({
+        ...status,
+        date: formatDate(status.date),
+      })),
+      estimatedDateOfDelivery: formatDate(order.estimatedDateOfDelivery),
+    };
+    setOrderDetails(formattedOrder);
     setEditingOrderId(order._id);
   };
 

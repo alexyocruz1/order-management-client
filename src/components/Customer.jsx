@@ -17,8 +17,13 @@ const Customer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/orders/${orderNumber}`);
-    setOrder(response.data);
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/orders/${orderNumber}`);
+      setOrder(response.data);
+      M.toast({ html: 'Order retrieved successfully!', classes: 'green' });
+    } catch (error) {
+      M.toast({ html: 'Failed to retrieve order. Please try again.', classes: 'red' });
+    }
   };
 
   const statusIcons = {
