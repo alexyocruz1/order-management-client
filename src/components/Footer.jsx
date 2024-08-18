@@ -1,4 +1,3 @@
-// src/components/Footer.jsx
 import React from 'react';
 
 const Footer = () => {
@@ -8,7 +7,7 @@ const Footer = () => {
         <div className="row">
           <div className="col l6 s12">
             <h5 className="white-text">Order Management</h5>
-            <p className="grey-text text-lighten-4">Simple order management tool to keep track of tour packages.</p>
+            <p className="grey-text text-lighten-4">Simple order management tool to keep track of your packages.</p>
           </div>
         </div>
       </div>

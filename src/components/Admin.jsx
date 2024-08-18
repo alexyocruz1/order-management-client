@@ -5,10 +5,9 @@ import M from 'materialize-css';
 const Admin = () => {
   const formatDate = (date) => {
     const d = new Date(date);
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     return d.toISOString().split('T')[0];
   };
-  
+
   const initialOrderDetails = {
     orderOwner: '',
     orderName: '',
@@ -36,20 +35,20 @@ const Admin = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setOrderDetails({ ...orderDetails, [name]: name === 'estimatedDateOfDelivery' ? formatDate(value) : value });
+    setOrderDetails({ ...orderDetails, [name]: value });
   };
 
   const handleStatusChange = (index, e) => {
     const { name, value } = e.target;
     const newOrderStatus = [...orderDetails.orderStatus];
-    newOrderStatus[index][name] = name === 'date' ? formatDate(value) : value;
+    newOrderStatus[index][name] = value;
     setOrderDetails({ ...orderDetails, orderStatus: newOrderStatus });
   };
 
   const addStatus = () => {
     setOrderDetails((prevDetails) => ({
       ...prevDetails,
-      orderStatus: [...prevDetails.orderStatus, { status: '', description: '', date: new Date().toISOString().split('T')[0] }],
+      orderStatus: [...prevDetails.orderStatus, { status: '', description: '', date: formatDate(new Date()) }],
     }));
   };
 
@@ -69,7 +68,7 @@ const Admin = () => {
         })),
         estimatedDateOfDelivery: formatDate(orderDetails.estimatedDateOfDelivery),
       };
-  
+
       if (editingOrderId) {
         const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/admin/update-order/${editingOrderId}`, formattedOrderDetails);
         if (response.status === 200) {
@@ -160,7 +159,6 @@ const Admin = () => {
                 id="estimatedDateOfDelivery"
                 value={orderDetails.estimatedDateOfDelivery}
                 onChange={handleChange}
-                readOnly
               />
               <label htmlFor="estimatedDateOfDelivery" className="active">Estimated Delivery Date</label>
             </div>

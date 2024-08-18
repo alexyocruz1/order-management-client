@@ -44,9 +44,14 @@ const Customer = () => {
     complete: 'Your order is complete.'
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Date(date.getTime() + date.getTimezoneOffset() * 60000).toLocaleDateString();
+  };
+
   return (
     <div className="container">
-      <h2 className="center-align">Customer Panel</h2>
+      <h2 className="center-align">Track your order</h2>
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="input-field col s12">
@@ -66,7 +71,7 @@ const Customer = () => {
             <h3>Order Details</h3>
             <p><strong>Order Owner:</strong> {order.orderOwner}</p>
             <p><strong>Order Name:</strong> {order.orderName}</p>
-            <p><strong>Estimated Date of Delivery:</strong> {new Date(order.estimatedDateOfDelivery).toLocaleDateString()}</p>
+            <p><strong>Estimated Date of Delivery:</strong> {formatDate(order.estimatedDateOfDelivery)}</p>
             <p><strong>Order Description:</strong></p>
             <textarea className="materialize-textarea" readOnly value={order.orderDescription}></textarea>
             <ul className="collapsible">
@@ -78,7 +83,7 @@ const Customer = () => {
                       <i className="material-icons">{statusIcons[status.status]}</i>
                       {status.status}
                       <span style={{ marginLeft: 'auto', textAlign: 'end', display: 'inline-block', width: '100px' }}>
-                        {new Date(status.date).toLocaleDateString()}
+                        {formatDate(status.date)}
                       </span>
                     </div>
                     <div className="collapsible-body">
