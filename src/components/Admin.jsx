@@ -165,15 +165,22 @@ const Admin = () => {
             {orderDetails.orderStatus.map((status, index) => (
               <div key={index} className="card-panel grey lighten-4">
                 <div className="input-field">
-                  <input
-                    type="text"
+                  <select
                     name="status"
                     id={`status-${index}`}
                     value={status.status}
                     onChange={(e) => handleStatusChange(index, e)}
-                    className="validate"
-                  />
-                  <label htmlFor={`status-${index}`} className={status.status ? 'active' : ''}>Status</label>
+                    className="browser-default"
+                  >
+                    <option value="" disabled>Select Status</option>
+                    <option value="captured">Captured</option>
+                    <option value="processed">Processed</option>
+                    <option value="waiting for delivery">Waiting for delivery</option>
+                    <option value="on the way">On the way</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="complete">Complete</option>
+                  </select>
+                  <label htmlFor={`status-${index}`} className="active">Status</label>
                 </div>
                 <div className="input-field">
                   <input
@@ -197,18 +204,18 @@ const Admin = () => {
                   />
                   <label htmlFor={`date-${index}`} className="active">Date</label>
                 </div>
-                <button type="button" className="btn red" onClick={() => removeStatus(index)}>
+                <button type="button" className="btn red" onClick={() => removeStatus(index)} style={{ width: '100%', marginTop: '10px' }}>
                   Remove
                   <i className="material-icons right">remove</i>
                 </button>
               </div>
             ))}
-            <div className="button-group">
-              <button type="button" className="btn waves-effect waves-light" onClick={addStatus}>
+            <div className="button-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <button type="button" className="btn waves-effect waves-light" onClick={addStatus} style={{ width: '100%', marginBottom: '10px' }}>
                 Add Status
                 <i className="material-icons right">add</i>
               </button>
-              <button className="btn waves-effect waves-light" type="submit" name="action" style={{ marginLeft: '10px' }}>
+              <button className="btn waves-effect waves-light" type="submit" name="action" style={{ width: '100%' }}>
                 {editingOrderId ? 'Update Order' : 'Create Order'}
                 <i className="material-icons right">send</i>
               </button>
@@ -217,17 +224,19 @@ const Admin = () => {
           <h2 className="center-align">Orders</h2>
           <ul className="collection">
             {orders.map((order) => (
-              <li key={order._id} className="collection-item" style={{lineHeight: '2.5rem'}}>
-                <div>
+              <li key={order._id} className="collection-item" style={{ lineHeight: '2.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   {order.orderNumber}
-                  <button className="btn-small blue right" onClick={() => handleEdit(order)}>
-                    Edit
-                    <i className="material-icons right">edit</i>
-                  </button>
-                  <button className="btn-small red right" onClick={() => handleDelete(order._id)} style={{ marginRight: '10px' }}>
-                    Delete
-                    <i className="material-icons right">delete</i>
-                  </button>
+                  <div>
+                    <button className="btn-small blue" onClick={() => handleEdit(order)} style={{ marginRight: '10px' }}>
+                      Edit
+                      <i className="material-icons right">edit</i>
+                    </button>
+                    <button className="btn-small red" onClick={() => handleDelete(order._id)}>
+                      Delete
+                      <i className="material-icons right">delete</i>
+                    </button>
+                  </div>
                 </div>
               </li>
             ))}

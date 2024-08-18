@@ -34,7 +34,6 @@ const Login = ({ onLogin }) => {
               <input
                 type="text"
                 id="username"
-                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="validate"
@@ -45,7 +44,6 @@ const Login = ({ onLogin }) => {
               <input
                 type="password"
                 id="password"
-                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="validate"
