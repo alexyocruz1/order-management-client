@@ -2,10 +2,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
+  const styles = {
+    navWrapper: {
+      backgroundColor: '#0D47A1',
+    },
+    brandLogo: {
+      fontSize: '2rem',
+    },
+  };
+
+  if (window.innerWidth <= 767) {
+    styles.brandLogo.fontSize = '1.5rem';
+  }
+
   return (
-    <nav className="nav-wrapper blue darken-3">
+    <nav style={styles.navWrapper}>
       <div className="container">
-        <Link to="/" className="brand-logo center">Order Management</Link>
+        <Link to="/" style={styles.brandLogo} className="brand-logo center">
+          Order Managing
+        </Link>
       </div>
     </nav>
   );
