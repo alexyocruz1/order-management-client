@@ -36,12 +36,12 @@ const Customer = () => {
   };
 
   const statusDescriptions = {
-    captured: 'Your order has been captured.',
-    processed: 'Your order is being processed.',
-    'waiting for delivery': 'Your order is waiting for delivery.',
-    'on the way': 'Your order is on the way.',
-    delivered: 'Your order has been delivered.',
-    complete: 'Your order is complete.'
+    captured: 'Your order has been captured in our system and we will get it ready to be processed.',
+    processed: 'Your order is being processed with the right information to get it ready for deliver.',
+    'waiting for delivery': 'Your order is waiting for a delivery carrier in the facility.',
+    'on the way': 'Your order is on the way to you right now.',
+    delivered: 'Your order has been delivered to you directly.',
+    complete: 'Your order is complete and we received the confirmation that you got it.'
   };
 
   const formatDate = (dateString) => {
@@ -81,7 +81,9 @@ const Customer = () => {
                   <li key={index}>
                     <div className="collapsible-header">
                       <i className="material-icons">{statusIcons[status.status]}</i>
-                      {status.status}
+                      <span style={{textTransform: 'capitalize'}}>
+                        {status.status}
+                      </span>
                       <span style={{ marginLeft: 'auto', textAlign: 'end', display: 'inline-block', width: '100px' }}>
                         {formatDate(status.date)}
                       </span>
